@@ -298,8 +298,9 @@ describe("publish", () => {
       code: 0,
       stderr: "",
       stdout: [
-        `🦋  New tag: simple-project-pkg-a@0.0.1`,
-        `🦋  New tag: simple-project-pkg-b@0.0.1`,
+        `🦋  success packages published successfully:`,
+        `🦋  simple-project-pkg-a@0.0.1`,
+        `🦋  simple-project-pkg-b@0.0.1`,
       ].join("\n"),
     };
 
@@ -332,8 +333,9 @@ describe("publish", () => {
       code: 0,
       stderr: "",
       stdout: [
-        `🦋  New tag: simple-project-pkg-a@0.0.1`,
-        `🦋  New tag: simple-project-pkg-b@0.0.1`,
+        `🦋  success packages published successfully:`,
+        `🦋  simple-project-pkg-a@0.0.1`,
+        `🦋  simple-project-pkg-b@0.0.1`,
       ].join("\n"),
     };
 
@@ -366,8 +368,9 @@ describe("publish", () => {
       code: 0,
       stderr: "",
       stdout: [
-        `🦋  New tag: simple-project-pkg-a@0.0.1`,
-        `🦋  New tag: simple-project-pkg-b@0.0.1`,
+        `🦋  success packages published successfully:`,
+        `🦋  simple-project-pkg-a@0.0.1`,
+        `🦋  simple-project-pkg-b@0.0.1`,
       ].join("\n"),
     };
 
@@ -379,8 +382,6 @@ describe("publish", () => {
       githubTagName: `mytag`,
       cwd,
     });
-
-    console.log('response', response);
 
     expect(response.published).toBeTruthy();
     response.published && expect(response.publishedPackages.length).toBe(2);

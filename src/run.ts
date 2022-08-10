@@ -141,16 +141,15 @@ export async function runPublish({
   let { packages, tool } = await getPackages(cwd);
   let releasedPackages: Package[] = [];
 
+  let publishPackageRegex = /\ (.+)\@((\d+)(\.)(\d+)(\.)(\d+))/g;
+  let publishedSucceed = changesetPublishOutput.stdout.includes(`published successfully`);
+  let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
+
   if (tool !== "root") {
-    let newTagRegex = /New tag:\s+(@[^/]+\/[^@]+|[^/]+)@([^\s]+)/;
     let packagesByName = new Map(packages.map((x) => [x.packageJson.name, x]));
 
-    for (let line of changesetPublishOutput.stdout.split("\n")) {
-      let match = line.match(newTagRegex);
-      if (match === null) {
-        continue;
-      }
-      let pkgName = match[1];
+    for (let line of lines) {
+      let pkgName = line[1]?.trim();
       let pkg = packagesByName.get(pkgName);
       if (pkg === undefined) {
         throw new Error(
@@ -186,25 +185,19 @@ export async function runPublish({
       );
     }
     let pkg = packages[0];
-    let newTagRegex = /New tag:/;
 
-    for (let line of changesetPublishOutput.stdout.split("\n")) {
-      let match = line.match(newTagRegex);
-
-      if (match) {
-        releasedPackages.push(pkg);
-        if (createGithubReleases) {
-          await createRelease(octokit, {
-            pkg,
-            tagName: `v${pkg.packageJson.version}`,
-          });
-        }
-        break;
+    if (Array.from(lines).length) {
+      releasedPackages.push(pkg);
+      if (createGithubReleases) {
+        await createRelease(octokit, {
+          pkg,
+          tagName: `v${pkg.packageJson.version}`,
+        });
       }
     }
   }
 
-  if (releasedPackages.length) {
+  if (releasedPackages.length && publishedSucceed) {
     return {
       published: true,
       publishedPackages: releasedPackages.map((pkg) => ({
