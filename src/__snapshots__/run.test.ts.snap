@@ -10,10 +10,6 @@ Array [
 # Releases
 ## simple-project-pkg-a@1.1.0
 
-# simple-project-pkg-a
-
-## 1.1.0
-
 ### Minor Changes
 
 -   Awesome feature
@@ -24,10 +20,6 @@ Array [
     -   simple-project-pkg-b@1.1.0
 
 ## simple-project-pkg-b@1.1.0
-
-# simple-project-pkg-b
-
-## 1.1.0
 
 ### Minor Changes
 
@@ -91,10 +83,6 @@ Array [
 # Releases
 ## ignored-package-pkg-b@1.1.0
 
-# ignored-package-pkg-b
-
-## 1.1.0
-
 ### Minor Changes
 
 -   Awesome feature
@@ -116,10 +104,6 @@ Array [
 
 # Releases
 ## simple-project-pkg-a@1.1.0
-
-# simple-project-pkg-a
-
-## 1.1.0
 
 ### Minor Changes
 

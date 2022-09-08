@@ -1,4 +1,3 @@
-import * as core from "@actions/core";
 import unified from "unified";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
@@ -40,9 +39,8 @@ export function getChangelogEntry(changelog: string, version: string) {
   let ast = unified().use(remarkParse).parse(changelog);
 
   let highestLevel: number = BumpLevels.dep;
-  let children = (ast as any).children as Array<any>;
 
-  let nodes = children as Array<any>;
+  let nodes = ast.children as Array<any>;
   let headingStartInfo:
     | {
         index: number;
@@ -78,7 +76,10 @@ export function getChangelogEntry(changelog: string, version: string) {
     }
   }
   if (headingStartInfo) {
-    children = children.slice(headingStartInfo.index + 1, endIndex);
+    ast.children = (ast.children as any).slice(
+      headingStartInfo.index + 1,
+      endIndex
+    );
   }
   return {
     content: unified().use(remarkStringify).stringify(ast),
