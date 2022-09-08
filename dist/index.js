@@ -41106,8 +41106,7 @@ async function getChangedPackages(cwd, previousVersions) {
 function getChangelogEntry(changelog, version) {
   let ast = (0, import_unified.default)().use(import_remark_parse.default).parse(changelog);
   let highestLevel = BumpLevels.dep;
-  let children = ast.children;
-  let nodes = children;
+  let nodes = ast.children;
   let headingStartInfo;
   let endIndex;
   for (let i = 0; i < nodes.length; i++) {
@@ -41133,7 +41132,10 @@ function getChangelogEntry(changelog, version) {
     }
   }
   if (headingStartInfo) {
-    children = children.slice(headingStartInfo.index + 1, endIndex);
+    ast.children = ast.children.slice(
+      headingStartInfo.index + 1,
+      endIndex
+    );
   }
   return {
     content: (0, import_unified.default)().use(import_remark_stringify.default).stringify(ast),
@@ -41185,6 +41187,9 @@ var push = async (branch, { force } = {}) => {
       Boolean
     )
   );
+};
+var pushTags = async () => {
+  await (0, import_exec2.exec)("git", ["push", "origin", "--tags"]);
 };
 var switchToMaybeExistingBranch = async (branch) => {
   let { stderr } = await execWithOutput("git", ["checkout", branch], {
@@ -41607,6 +41612,7 @@ async function runPublish({
     publishArgs,
     { cwd }
   );
+  await pushTags();
   let { packages, tool } = await (0, import_get_packages4.getPackages)(cwd);
   let releasedPackages = [];
   let publishPackageRegex = /"(.+)("\s(at))/g;
@@ -41675,7 +41681,6 @@ async function runPublish({
   return { published: false };
 }
 var requireChangesetsCliPkgJson = (cwd) => {
-  console.log(cwd);
   try {
     return require((0, import_resolve_from.default)(cwd, "@changesets/cli/package.json"));
   } catch (err) {
