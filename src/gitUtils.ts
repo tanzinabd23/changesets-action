@@ -2,11 +2,7 @@ import { exec } from "@actions/exec";
 import { execWithOutput } from "./utils";
 
 export const setupUser = async () => {
-  await exec("git", [
-    "config",
-    "user.name",
-    `"github-actions[bot]"`,
-  ]);
+  await exec("git", ["config", "user.name", `"github-actions[bot]"`]);
   await exec("git", [
     "config",
     "user.email",

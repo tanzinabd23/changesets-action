@@ -3,7 +3,7 @@
   "name": "simple-project",
   "version": "1.0.0",
   "scripts": {
-    "release": "changeset publish" 
+    "release": "changeset publish"
   },
   "workspaces": [
     "packages/*"

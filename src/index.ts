@@ -103,7 +103,7 @@ function extractCreateGithubReleases(
         createGithubReleases: extractCreateGithubReleases(
           core.getInput("createGithubReleases")
         ),
-        githubTagName:  core.getInput("githubTagName"),
+        githubTagName: core.getInput("githubTagName"),
         githubReleaseName: getOptionalInput("githubReleaseName"),
       });
 

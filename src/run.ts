@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import { exec } from "@actions/exec";
 import * as github from "@actions/github";
 import fs from "fs-extra";
@@ -26,7 +27,7 @@ const createAggregatedRelease = async (
   octokit: ReturnType<typeof github.getOctokit>,
   packages: Package[],
   releaseName?: string,
-  tagName?: string,
+  tagName?: string
 ) => {
   const contentArr = await Promise.all(
     packages.map(async (pkg) => {
@@ -93,7 +94,7 @@ const createRelease = async (
     });
   } catch (err) {
     // if we can't find a changelog, the user has probably disabled changelogs
-    if (err.code !== "ENOENT") {
+    if ((err as any).code !== "ENOENT") {
       throw err;
     }
   }
@@ -136,13 +137,13 @@ export async function runPublish({
     { cwd }
   );
 
-  await gitUtils.pushTags();
-
   let { packages, tool } = await getPackages(cwd);
   let releasedPackages: Package[] = [];
 
-  let publishPackageRegex = /\ (.+)\@((\d+)(\.)(\d+)(\.)(\d+))/g;
-  let publishedSucceed = changesetPublishOutput.stdout.includes(`published successfully`);
+  let publishPackageRegex = /"(.+)("\s(at))/g;
+  let publishedSucceed = changesetPublishOutput.stdout.includes(
+    `published successfully`
+  );
   let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
 
   if (tool !== "root") {
@@ -211,10 +212,11 @@ export async function runPublish({
 }
 
 const requireChangesetsCliPkgJson = (cwd: string) => {
+  console.log(cwd);
   try {
     return require(resolveFrom(cwd, "@changesets/cli/package.json"));
   } catch (err) {
-    if (err && err.code === "MODULE_NOT_FOUND") {
+    if (err && (err as any).code === "MODULE_NOT_FOUND") {
       throw new Error(
         `Have you forgotten to install \`@changesets/cli\` in "${cwd}"?`
       );
