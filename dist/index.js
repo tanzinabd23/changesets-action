@@ -41614,6 +41614,9 @@ async function runPublish({
     `published successfully`
   );
   let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
+  if (!publishedSucceed) {
+    return { published: false };
+  }
   if (tool !== "root") {
     let packagesByName = new Map(packages.map((x) => [x.packageJson.name, x]));
     for (let line of lines) {

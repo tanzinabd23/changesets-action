@@ -146,6 +146,10 @@ export async function runPublish({
   );
   let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
 
+  if (!publishedSucceed) {
+    return { published: false };
+  }
+
   if (tool !== "root") {
     let packagesByName = new Map(packages.map((x) => [x.packageJson.name, x]));
 
