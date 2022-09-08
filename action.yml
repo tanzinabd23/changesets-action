@@ -27,15 +27,15 @@ inputs:
   createGithubReleases:
     description: "A value to indicate whether to create Github releases after `publish` or not, and on which mode"
     required: false
-    default: 'true'
+    default: "true"
   githubReleaseName:
     description: "In case createGithubReleases: aggregate is set, you can customize the GitHub release name. Default to `Release <Date ISO>`"
     required: false
-    default: ''
+    default: ""
   githubTagName:
     description: "In case createGithubReleases: aggregate is set, you can customize the GitHub tag name. Default to `release-<timestamp>`"
     required: false
-    default: ''
+    default: ""
 outputs:
   published:
     description: A boolean value to indicate whether a publishing is happened or not

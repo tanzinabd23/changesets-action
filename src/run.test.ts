@@ -55,6 +55,19 @@ const writeChangesets = (changesets: Changeset[], cwd: string) => {
   return Promise.all(changesets.map((commit) => writeChangeset(commit, cwd)));
 };
 
+const PUBLISHED_OUTPUT_MOCK = [
+  `🦋  info npm info simple-project-pkg-a`,
+  `🦋  info npm info simple-project-pkg-b`,
+  `🦋  info simple-project-pkg-a is being published because our local version (0.0.1) has not been published on npm`,
+  `🦋  info simple-project-pkg-b is being published because our local version (0.0.1) has not been published on npm`,
+  `🦋  info my-pkg/pkg-3 is being published because our local version (0.0.1) has not been published on npm`,
+  `🦋  info Publishing "simple-project-pkg-a" at "0.0.1"`,
+  `🦋  info Publishing "simple-project-pkg-b" at "0.0.1"`,
+  `🦋  success packages published successfully:`,
+  `🦋  simple-project-pkg-a@0.0.1`,
+  `🦋  simple-project-pkg-b@0.0.1`,
+];
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
@@ -297,11 +310,7 @@ describe("publish", () => {
     mockedExecResponse = {
       code: 0,
       stderr: "",
-      stdout: [
-        `🦋  success packages published successfully:`,
-        `🦋  simple-project-pkg-a@0.0.1`,
-        `🦋  simple-project-pkg-b@0.0.1`,
-      ].join("\n"),
+      stdout: PUBLISHED_OUTPUT_MOCK.join("\n"),
     };
 
     // Fake a CHANGELOG.md files
@@ -332,11 +341,7 @@ describe("publish", () => {
     mockedExecResponse = {
       code: 0,
       stderr: "",
-      stdout: [
-        `🦋  success packages published successfully:`,
-        `🦋  simple-project-pkg-a@0.0.1`,
-        `🦋  simple-project-pkg-b@0.0.1`,
-      ].join("\n"),
+      stdout: PUBLISHED_OUTPUT_MOCK.join("\n"),
     };
 
     const response = await runPublish({
@@ -367,11 +372,7 @@ describe("publish", () => {
     mockedExecResponse = {
       code: 0,
       stderr: "",
-      stdout: [
-        `🦋  success packages published successfully:`,
-        `🦋  simple-project-pkg-a@0.0.1`,
-        `🦋  simple-project-pkg-b@0.0.1`,
-      ].join("\n"),
+      stdout: PUBLISHED_OUTPUT_MOCK.join("\n"),
     };
 
     const response = await runPublish({

@@ -6,14 +6,15 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.2",
     "@changesets/cli": "^2.20.0",
+    "@changesets/types": "^5.1.0",
     "@changesets/write": "^0.1.6",
     "fixturez": "^1.1.0",
-    "parcel": "^1.12.3",
     "prettier": "^2.0.5",
+    "tsup": "^6.2.3",
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "build": "parcel build ./src/index.ts --no-source-maps --target=node --bundle-node-modules",
+    "build": "tsup ./src/index.ts",
     "test": "jest",
     "test:watch": "yarn test --watch",
     "changeset": "changeset",
