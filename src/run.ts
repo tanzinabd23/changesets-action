@@ -137,6 +137,8 @@ export async function runPublish({
     { cwd }
   );
 
+  await gitUtils.pushTags();
+
   let { packages, tool } = await getPackages(cwd);
   let releasedPackages: Package[] = [];
 
@@ -216,7 +218,6 @@ export async function runPublish({
 }
 
 const requireChangesetsCliPkgJson = (cwd: string) => {
-  console.log(cwd);
   try {
     return require(resolveFrom(cwd, "@changesets/cli/package.json"));
   } catch (err) {
