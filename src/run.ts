@@ -377,11 +377,12 @@ export async function runVersion({
     }`;
     await gitUtils.commitAll(finalCommitMessage);
   }
+  console.log('Is not clean!');
 
   await gitUtils.push(versionBranch, { force: true });
 
   let searchResult = await searchResultPromise;
-  console.log(JSON.stringify(searchResult.data, null, 2));
+  console.log('searchResult', JSON.stringify(searchResult.data, null, 2));
 
   const changedPackagesInfo = (await changedPackagesInfoPromises)
     .filter((x) => x)
