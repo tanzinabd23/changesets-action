@@ -50,6 +50,7 @@ function extractCreateGithubReleases(
   );
 
   let { changesets } = await readChangesetState();
+  console.log(changesets);
 
   let publishScript = core.getInput("publish");
   let hasChangesets = changesets.length !== 0;
@@ -117,6 +118,7 @@ function extractCreateGithubReleases(
       return;
     }
     case hasChangesets:
+      console.log('hasChangesets -->>>');
       const { pullRequestNumber } = await runVersion({
         script: getOptionalInput("version"),
         githubToken,
