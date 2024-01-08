@@ -57211,10 +57211,8 @@ async function runVersion({
     const finalCommitMessage = `${commitMessage}${!!preState ? ` (${preState.tag})` : ""}`;
     await commitAll(finalCommitMessage);
   }
-  console.log("Is not clean!");
   await push(versionBranch, { force: true });
   let searchResult = await searchResultPromise;
-  console.log("searchResult", JSON.stringify(searchResult.data, null, 2));
   const changedPackagesInfo = (await changedPackagesInfoPromises).filter((x) => x).sort(sortTheThings);
   let prBody = await getVersionPrBody({
     hasPublishScript,
@@ -57287,7 +57285,10 @@ login github-actions[bot]
 password ${githubToken}`
   );
   let { changesets } = await readChangesetState();
-  console.log(changesets);
+  console.log("************************");
+  console.log("Changeset State:");
+  console.dir(changesets, { depth: null });
+  console.log("************************");
   let publishScript = core.getInput("publish");
   let hasChangesets = changesets.length !== 0;
   let hasPublishScript = !!publishScript;
@@ -57351,7 +57352,6 @@ password ${githubToken}`
       return;
     }
     case hasChangesets:
-      console.log("hasChangesets -->>>");
       const { pullRequestNumber } = await runVersion({
         script: getOptionalInput("version"),
         githubToken,
