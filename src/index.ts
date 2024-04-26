@@ -109,6 +109,7 @@ function extractCreateGithubReleases(
         ),
         githubTagName: core.getInput("githubTagName"),
         githubReleaseName: getOptionalInput("githubReleaseName"),
+        skipNpm: core.getBooleanInput("skipNpm"),
       });
 
       if (result.published) {

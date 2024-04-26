@@ -57016,12 +57016,15 @@ var createRelease = async (octokit, { pkg, tagName }) => {
     }
   }
 };
+var GITHUB_TAG_REGEX = /New tag:\s+(.+)@(.+)/g;
+var NPM_TAG_REGEX = /"(.+)("\s(at))/g;
 async function runPublish({
   script,
   githubToken,
   createGithubReleases,
   githubReleaseName,
   githubTagName,
+  skipNpm = false,
   cwd = process.cwd()
 }) {
   let octokit = github.getOctokit(githubToken);
@@ -57031,11 +57034,10 @@ async function runPublish({
     publishArgs,
     { cwd }
   );
-  await pushTags();
   let { packages, tool } = await (0, import_get_packages4.getPackages)(cwd);
   let releasedPackages = [];
-  let publishPackageRegex = /"(.+)("\s(at))/g;
-  let publishedSucceed = changesetPublishOutput.stdout.includes(
+  let publishPackageRegex = skipNpm ? GITHUB_TAG_REGEX : NPM_TAG_REGEX;
+  let publishedSucceed = skipNpm ?? changesetPublishOutput.stdout.includes(
     `published successfully`
   );
   let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
@@ -57089,6 +57091,7 @@ async function runPublish({
     }
   }
   if (releasedPackages.length && publishedSucceed) {
+    await pushTags();
     return {
       published: true,
       publishedPackages: releasedPackages.map((pkg) => ({
@@ -57340,7 +57343,8 @@ password ${githubToken}`
           core.getInput("createGithubReleases")
         ),
         githubTagName: core.getInput("githubTagName"),
-        githubReleaseName: getOptionalInput("githubReleaseName")
+        githubReleaseName: getOptionalInput("githubReleaseName"),
+        skipNpm: core.getBooleanInput("skipNpm")
       });
       if (result.published) {
         core.setOutput("published", "true");

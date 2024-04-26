@@ -36,6 +36,10 @@ inputs:
     description: "In case createGithubReleases: aggregate is set, you can customize the GitHub tag name. Default to `release-<timestamp>`"
     required: false
     default: ""
+  skipNpm:
+    description: "Skip publishing to npm"
+    required: false
+    default: "false"
 outputs:
   published:
     description: A boolean value to indicate whether a publishing is happened or not

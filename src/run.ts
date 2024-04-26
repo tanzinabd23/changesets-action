@@ -106,6 +106,7 @@ export type PublishOptions = {
   createGithubReleases: boolean | "aggregate";
   githubReleaseName?: string;
   githubTagName?: string;
+  skipNpm?: boolean;
   cwd?: string;
 };
 
@@ -120,12 +121,17 @@ type PublishResult =
       published: false;
     };
 
+
+const GITHUB_TAG_REGEX = /New tag:\s+(.+)@(.+)/g;
+const NPM_TAG_REGEX = /"(.+)("\s(at))/g;
+
 export async function runPublish({
   script,
   githubToken,
   createGithubReleases,
   githubReleaseName,
   githubTagName,
+  skipNpm = false,
   cwd = process.cwd(),
 }: PublishOptions): Promise<PublishResult> {
   let octokit = github.getOctokit(githubToken);
@@ -137,13 +143,11 @@ export async function runPublish({
     { cwd }
   );
 
-  await gitUtils.pushTags();
-
   let { packages, tool } = await getPackages(cwd);
   let releasedPackages: Package[] = [];
 
-  let publishPackageRegex = /"(.+)("\s(at))/g;
-  let publishedSucceed = changesetPublishOutput.stdout.includes(
+  let publishPackageRegex = skipNpm ? GITHUB_TAG_REGEX : NPM_TAG_REGEX;
+  let publishedSucceed = skipNpm ?? changesetPublishOutput.stdout.includes(
     `published successfully`
   );
   let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
@@ -204,7 +208,9 @@ export async function runPublish({
     }
   }
 
+  
   if (releasedPackages.length && publishedSucceed) {
+    await gitUtils.pushTags();
     return {
       published: true,
       publishedPackages: releasedPackages.map((pkg) => ({
