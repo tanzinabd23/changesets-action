@@ -57056,6 +57056,9 @@ async function runPublish({
       }
       releasedPackages.push(pkg);
     }
+    if (!releasedPackages.length) {
+      return { published: false };
+    }
     if (createGithubReleases === true) {
       await Promise.all(
         releasedPackages.map(
