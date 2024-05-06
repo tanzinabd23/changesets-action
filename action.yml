@@ -39,7 +39,7 @@ inputs:
   skipNpm:
     description: "Skip publishing to npm"
     required: false
-    default: "false"
+    default: false
 outputs:
   published:
     description: A boolean value to indicate whether a publishing is happened or not
