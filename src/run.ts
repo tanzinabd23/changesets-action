@@ -147,7 +147,7 @@ export async function runPublish({
   let releasedPackages: Package[] = [];
 
   let publishPackageRegex = skipNpm ? GITHUB_TAG_REGEX : NPM_TAG_REGEX;
-  let publishedSucceed = skipNpm ? true : changesetPublishOutput.stdout.includes(
+  let publishedSucceed = skipNpm || changesetPublishOutput.stdout.includes(
     `published successfully`
   );
   let lines = changesetPublishOutput.stdout.matchAll(publishPackageRegex);
