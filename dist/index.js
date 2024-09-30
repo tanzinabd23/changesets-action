@@ -57017,7 +57017,7 @@ var createRelease = async (octokit, { pkg, tagName }) => {
   }
 };
 var GITHUB_TAG_REGEX = /New tag:\s+(.+)@(.+)/g;
-var NPM_TAG_REGEX = /"(.+)("\s(at))/g;
+var NPM_TAG_REGEX = /🦋\s+(.+)@(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/g;
 async function runPublish({
   script,
   githubToken,
